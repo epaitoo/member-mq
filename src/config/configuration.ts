@@ -10,6 +10,7 @@ export const configuration = () => {
       password: process.env.DB_PASSWORD,
       port: process.env.DB_PORT,
       host: process.env.DB_HOST,
+      url: process.env.DATABASE_URL,
     },
   };
 };
@@ -22,4 +23,5 @@ export const validationSchema = Joi.object({
   DB_PASSWORD: Joi.string().required(),
   DB_PORT: Joi.number().required(),
   DB_HOST: Joi.string().required(),
+  DATABASE_URL: Joi.string().required(),
 });
