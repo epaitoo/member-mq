@@ -12,13 +12,15 @@ datasource db {
 
 model User {
   id          String   @id @default(uuid())
-  fullName    String
+  fullName    String?
   email       String   @unique
   role        Role     @default(USER)
-  phoneNumber Int
+  phoneNumber Int?
   hash        String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@map("users")
 }
 
 model Member {
@@ -29,6 +31,8 @@ model Member {
   group       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@map("members")
 }
 
 enum Role {

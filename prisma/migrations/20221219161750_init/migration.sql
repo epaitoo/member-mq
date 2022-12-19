@@ -2,21 +2,21 @@
 CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
 
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE "users" (
     "id" TEXT NOT NULL,
-    "fullName" TEXT NOT NULL,
+    "fullName" TEXT,
     "email" TEXT NOT NULL,
     "role" "Role" NOT NULL DEFAULT 'USER',
-    "phoneNumber" INTEGER NOT NULL,
+    "phoneNumber" INTEGER,
     "hash" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Member" (
+CREATE TABLE "members" (
     "id" TEXT NOT NULL,
     "fullName" TEXT NOT NULL,
     "email" TEXT,
@@ -25,11 +25,11 @@ CREATE TABLE "Member" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Member_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "members_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Member_email_key" ON "Member"("email");
+CREATE UNIQUE INDEX "members_email_key" ON "members"("email");
