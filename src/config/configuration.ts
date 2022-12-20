@@ -12,11 +12,14 @@ export const configuration = () => {
       host: process.env.DB_HOST,
       url: process.env.DATABASE_URL,
     },
+    jwtSecret: process.env.JWT_SECRET,
   };
 };
 
 export const validationSchema = Joi.object({
-  NODE_ENV: Joi.string().valid('development', 'production', 'test').required(),
+  NODE_ENV: Joi.string()
+    .valid('development', 'production', 'test')
+    .required(),
   PORT: Joi.number().required(),
   DB_USER: Joi.string().required(),
   DB_NAME: Joi.string().required(),
@@ -24,4 +27,5 @@ export const validationSchema = Joi.object({
   DB_PORT: Joi.number().required(),
   DB_HOST: Joi.string().required(),
   DATABASE_URL: Joi.string().required(),
+  JWT_SECRET: Joi.string().required(),
 });
