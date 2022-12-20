@@ -13,6 +13,8 @@ export const configuration = () => {
       url: process.env.DATABASE_URL,
     },
     jwtSecret: process.env.JWT_SECRET,
+    refreshTokenSecret:
+      process.env.REFRESH_JWT_TOKEN_SECRET,
   };
 };
 
@@ -28,4 +30,5 @@ export const validationSchema = Joi.object({
   DB_HOST: Joi.string().required(),
   DATABASE_URL: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
+  REFRESH_JWT_TOKEN_SECRET: Joi.string().required(),
 });

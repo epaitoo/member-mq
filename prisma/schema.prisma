@@ -17,6 +17,7 @@ model User {
   role        Role     @default(USER)
   phoneNumber Int?
   hash        String
+  hashedRt    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
