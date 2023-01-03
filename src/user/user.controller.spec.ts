@@ -5,9 +5,10 @@ describe('UserController', () => {
   let controller: UserController;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [UserController],
-    }).compile();
+    const module: TestingModule =
+      await Test.createTestingModule({
+        controllers: [UserController],
+      }).compile();
 
     controller = module.get<UserController>(UserController);
   });

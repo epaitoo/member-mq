@@ -1,14 +1,16 @@
 import {
   ForbiddenException,
+  HttpException,
+  HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { JwtPayload, Tokens } from './types';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +21,8 @@ export class AuthService {
   ) {}
 
   async signup(dto: AuthDto): Promise<Tokens> {
+    this.authDtoValidation(dto);
+
     const hash = await argon.hash(dto.password);
     try {
       const user = await this.prisma.user.create({
@@ -48,6 +52,8 @@ export class AuthService {
   }
 
   async signIn(dto: AuthDto): Promise<Tokens> {
+    this.authDtoValidation(dto);
+
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
@@ -162,4 +168,23 @@ export class AuthService {
       refresh_token: refreshToken,
     };
   }
+
+  public authDtoValidation = (dto: AuthDto) => {
+    if (!dto.email) {
+      throw new HttpException(
+        'Email is required',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else if (!dto.password) {
+      throw new HttpException(
+        'password is required',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else if (!dto.email && !dto.password) {
+      throw new HttpException(
+        'Email and password is required',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  };
 }

@@ -2,7 +2,7 @@ import {
   createParamDecorator,
   ExecutionContext,
 } from '@nestjs/common';
-import { JwtPayloadWithRt } from 'src/auth/types';
+import { JwtPayloadWithRt } from '../../../auth/types';
 
 export const GetUser = createParamDecorator(
   (

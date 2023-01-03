@@ -9,6 +9,14 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "${DB_PORT}:5432"
+  test-db:
+    image: postgres
+    ports:
+      - 5435:5432
+    environment:
+      POSTGRES_DB: memqdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
 volumes:
   pgdata:
     
