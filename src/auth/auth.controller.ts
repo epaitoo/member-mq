@@ -10,7 +10,10 @@ import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 import { Tokens } from './types';
 import { Public } from '../common/decorator/auth';
-import { RefreshTokenGuard } from '../common/guard';
+import {
+  JwtGuard,
+  RefreshTokenGuard,
+} from '../common/guard';
 import {
   GetCurrentUserId,
   GetUser,

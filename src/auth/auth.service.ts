@@ -31,12 +31,13 @@ export class AuthService {
           hash,
         },
       });
-      const tokens = this.getTokens(user.id, user.email);
+      const tokens = await this.getTokens(
+        user.id,
+        user.email,
+      );
       await this.updateRtHash(
         user.id,
-        (
-          await tokens
-        ).refresh_token,
+        tokens.refresh_token,
       );
       return tokens;
     } catch (error) {
@@ -71,13 +72,11 @@ export class AuthService {
     if (!pwMatches) {
       throw new ForbiddenException('Invalid Credentials');
     }
-    const tokens = this.getTokens(user.id, user.email);
-    await this.updateRtHash(
+    const tokens = await this.getTokens(
       user.id,
-      (
-        await tokens
-      ).refresh_token,
+      user.email,
     );
+    await this.updateRtHash(user.id, tokens.refresh_token);
     return tokens;
   }
 

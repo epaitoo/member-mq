@@ -1,30 +1,21 @@
-import { INestApplication } from '@nestjs/common';
-import { AppModule } from '../src/app.module';
+import {
+  INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
-import { PrismaService } from '../src/prisma/prisma.service';
-import { AuthDto } from '../src/auth/dto';
 import { faker } from '@faker-js/faker';
-import { Tokens } from '../src/auth/types';
+import { AuthDto } from '../../src/auth/dto';
+import { Tokens } from '../../src/auth/types';
+import { AppModule } from '../../src/app.module';
+import { PrismaService } from '../../src/prisma/prisma.service';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
   let prisma: PrismaService;
   let httpServer: any;
   let token: Tokens;
-
-  beforeAll(async () => {
-    const moduleFixture = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
-
-    prisma = app.get(PrismaService);
-    await prisma.cleanDb();
-    httpServer = app.getHttpServer();
-  });
+  let timeoutId: NodeJS.Timeout;
 
   const authDto: AuthDto = {
     email: faker.internet.email(),
@@ -41,6 +32,22 @@ describe('AuthController (e2e)', () => {
       .set('Accept', 'application/json');
     return body;
   };
+
+  beforeAll(async () => {
+    const moduleFixture = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+
+    app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(
+      new ValidationPipe({ whitelist: true }),
+    );
+    await app.init();
+
+    prisma = app.get(PrismaService);
+    await prisma.cleanDb();
+    httpServer = app.getHttpServer();
+  });
 
   describe('POST /auth/signup', () => {
     it('it should throw error if email is empty', async () => {
@@ -92,23 +99,27 @@ describe('AuthController (e2e)', () => {
     });
 
     it('it should sign up a new User', async () => {
-      await request(httpServer)
-        .post('/auth/signup')
-        .send(authDto)
-        .then((res) => {
-          expect(res.status).toBe(201);
-          expect(res.body.access_token).toBeTruthy();
-          expect(res.body.refresh_token).toBeTruthy();
-        });
+      timeoutId = setTimeout(async () => {
+        await request(httpServer)
+          .post('/auth/signup')
+          .send(authDto)
+          .then((res) => {
+            expect(res.status).toBe(201);
+            expect(res.body.access_token).toBeTruthy();
+            expect(res.body.refresh_token).toBeTruthy();
+          });
+      }, 2000);
     });
 
     it('it should throw an error if email already exist', async () => {
-      await request(httpServer)
-        .post('/auth/signup')
-        .send(authDto)
-        .then((res) => {
-          expect(res.status).toBe(403);
-        });
+      timeoutId = setTimeout(async () => {
+        await request(httpServer)
+          .post('/auth/signup')
+          .send(authDto)
+          .then((res) => {
+            expect(res.status).toBe(403);
+          });
+      }, 1000);
     });
   });
 
@@ -186,17 +197,19 @@ describe('AuthController (e2e)', () => {
     });
 
     it('it should sign in User', async () => {
-      await request(httpServer)
-        .post('/auth/signin')
-        .send(authDto)
-        .then((res) => {
-          expect(res.status).toBe(200);
-          expect(res.body.access_token).toBeTruthy();
-          expect(res.body.refresh_token).toBeTruthy();
+      timeoutId = setTimeout(async () => {
+        await request(httpServer)
+          .post('/auth/signin')
+          .send(authDto)
+          .then((res) => {
+            expect(res.status).toBe(200);
+            expect(res.body.access_token).toBeTruthy();
+            expect(res.body.refresh_token).toBeTruthy();
 
-          token = res.body;
-        });
-    });
+            token = res.body;
+          });
+      });
+    }, 1000);
   });
 
   describe('POST /auth/refresh', () => {
@@ -211,28 +224,24 @@ describe('AuthController (e2e)', () => {
 
     it('should refresh user token', async () => {
       // wait for 1 second
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(true);
-        }, 1000);
-      });
+      timeoutId = setTimeout(async () => {
+        await request(httpServer)
+          .post('/auth/refresh')
+          .auth(token.refresh_token, { type: 'bearer' })
+          .then((res) => {
+            expect(res.status).toBe(200);
+            expect(res.body.access_token).toBeTruthy();
+            expect(res.body.refresh_token).toBeTruthy();
 
-      await request(httpServer)
-        .post('/auth/refresh')
-        .auth(token.refresh_token, { type: 'bearer' })
-        .then((res) => {
-          expect(res.status).toBe(200);
-          expect(res.body.access_token).toBeTruthy();
-          expect(res.body.refresh_token).toBeTruthy();
+            expect(res.body.refresh_token).not.toBe(
+              token.access_token,
+            );
 
-          expect(res.body.refresh_token).not.toBe(
-            token.access_token,
-          );
-
-          expect(res.body.refresh_token).not.toBe(
-            token.refresh_token,
-          );
-        });
+            expect(res.body.refresh_token).not.toBe(
+              token.refresh_token,
+            );
+          });
+      }, 1000);
     });
   });
 
@@ -257,17 +266,23 @@ describe('AuthController (e2e)', () => {
     it('should logout user', async () => {
       token = await loginUser(authDto);
 
-      await request(httpServer)
-        .post('/auth/logout')
-        .auth(token.access_token, { type: 'bearer' })
-        .then((res) => {
-          expect(res.status).toBe(200);
-        });
+      timeoutId = setTimeout(async () => {
+        await request(httpServer)
+          .post('/auth/logout')
+          .auth(token.access_token, { type: 'bearer' })
+          .then((res) => {
+            expect(res.status).toBe(200);
+          });
+      }, 1000);
     });
   });
 
+  afterEach(() => {
+    clearTimeout(timeoutId);
+  });
+
   afterAll(async () => {
-    await prisma.cleanDb();
+    // await prisma.cleanDb();
     app.close();
   });
 });

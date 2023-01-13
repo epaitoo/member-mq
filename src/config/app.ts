@@ -5,7 +5,10 @@ import { MemberModule } from '../member/member.module';
 import { PrismaModule } from '../prisma/prisma.module';
 import { UserModule } from '../user/user.module';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtGuard } from '../common/guard';
+import {
+  JwtGuard,
+  RefreshTokenGuard,
+} from '../common/guard';
 
 export const appConfig = {
   imports: [
@@ -25,5 +28,9 @@ export const appConfig = {
       provide: APP_GUARD,
       useClass: JwtGuard,
     },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RefreshTokenGuard,
+    // },
   ],
 };

@@ -15,7 +15,7 @@ model User {
   fullName    String?
   email       String   @unique
   role        Role     @default(USER)
-  phoneNumber Int?
+  phoneNumber String?
   hash        String
   hashedRt    String?
   createdAt   DateTime @default(now())
@@ -28,7 +28,7 @@ model Member {
   id          String   @id @default(uuid())
   fullName    String
   email       String?  @unique
-  phoneNumber Int
+  phoneNumber String
   group       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
