@@ -18,8 +18,6 @@ export class RefreshTokenStrategy extends PassportStrategy(
     config: ConfigService,
     private prisma: PrismaService,
   ) {
-    console.log(config.get<string>('refreshTokenSecret'));
-
     super({
       jwtFromRequest:
         ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -32,7 +30,6 @@ export class RefreshTokenStrategy extends PassportStrategy(
     req: Request,
     payload: JwtPayload,
   ): JwtPayloadWithRt {
-    console.log('has called validate');
     const refreshToken =
       req.headers.authorization &&
       req.headers.authorization.split(' ')[1];
@@ -40,30 +37,9 @@ export class RefreshTokenStrategy extends PassportStrategy(
       throw new ForbiddenException(
         'Refresh token malformed',
       );
-    console.log('refreshToken: ', refreshToken);
-
     return {
       ...payload,
       refreshToken,
     };
   }
-
-  // validate(
-  //   req: Request,
-  //   payload: JwtPayload,
-  // ): JwtPayloadWithRt {
-  //   const refreshToken = req.headers.authorization
-  //     ?.replace('Bearer', '')
-  //     .trim();
-  //   if (!refreshToken)
-  //     throw new ForbiddenException(
-  //       'Refresh token malformed',
-  //     );
-  //   console.log('refreshToken: ', refreshToken);
-
-  //   return {
-  //     ...payload,
-  //     refreshToken,
-  //   };
-  // }
 }

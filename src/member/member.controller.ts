@@ -8,26 +8,19 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
-import { RefreshTokenGuard } from '../common/guard';
 import { MemberService } from './member.service';
 import { CreateMemberDto, EditMemberDto } from './dto';
-import { GetUser } from '../common/decorator/getUser';
 
-@UseGuards(RefreshTokenGuard)
 @Controller('members')
 export class MemberController {
   constructor(
     private readonly memberService: MemberService,
   ) {}
 
-  @UseGuards(RefreshTokenGuard)
   @Get()
-  getAllMembers(
-    @GetUser('refreshToken') refreshToken: string,
-  ) {
-    return this.memberService.getMembers(refreshToken);
+  getAllMembers() {
+    return this.memberService.getMembers();
   }
 
   @Get(':id')

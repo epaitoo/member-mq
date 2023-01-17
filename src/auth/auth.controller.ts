@@ -10,10 +10,7 @@ import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 import { Tokens } from './types';
 import { Public } from '../common/decorator/auth';
-import {
-  JwtGuard,
-  RefreshTokenGuard,
-} from '../common/guard';
+import { RefreshTokenGuard } from '../common/guard';
 import {
   GetCurrentUserId,
   GetUser,
@@ -51,7 +48,7 @@ export class AuthController {
   refreshToken(
     @GetCurrentUserId() userId: string,
     @GetUser('refreshToken') refreshToken: string,
-  ) {
+  ): Promise<Tokens> {
     return this.authService.refreshToken(
       userId,
       refreshToken,

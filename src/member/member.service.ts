@@ -9,8 +9,7 @@ import { CreateMemberDto, EditMemberDto } from './dto';
 export class MemberService {
   constructor(private prisma: PrismaService) {}
 
-  async getMembers(refreshToken: string) {
-    console.log(refreshToken);
+  async getMembers() {
     return await this.prisma.member.findMany({
       orderBy: { createdAt: 'desc' },
     });

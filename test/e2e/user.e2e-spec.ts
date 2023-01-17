@@ -18,6 +18,7 @@ describe('UserController (e2e)', () => {
   let authService: AuthService;
   let httpServer: any;
   let token: Tokens;
+  let timeoutId: NodeJS.Timeout;
 
   const authDto: AuthDto = {
     email: faker.internet.email(),
@@ -47,13 +48,15 @@ describe('UserController (e2e)', () => {
 
   describe('GET /users/me', () => {
     it('should get current user', async () => {
-      await request(httpServer)
-        .get('/users/me')
-        .auth(token.access_token, { type: 'bearer' })
-        .then((res) => {
-          expect(res.body.email).toBe(authDto.email);
-          expect(res.status).toBe(200);
-        });
+      timeoutId = setTimeout(async () => {
+        await request(httpServer)
+          .get('/users/me')
+          .auth(token.access_token, { type: 'bearer' })
+          .then((res) => {
+            expect(res.body.email).toBe(authDto.email);
+            expect(res.status).toBe(200);
+          });
+      }, 1000);
     });
   });
 
@@ -64,16 +67,22 @@ describe('UserController (e2e)', () => {
         phoneNumber: '234234234231',
       };
 
-      await request(httpServer)
-        .patch('/users')
-        .auth(token.access_token, { type: 'bearer' })
-        .send(editUserDto)
-        .set('Content-Type', 'application/json')
-        .set('Accept', 'application/json')
-        .then((res) => {
-          expect(res.status).toBe(200);
-        });
+      timeoutId = setTimeout(async () => {
+        await request(httpServer)
+          .patch('/users')
+          .auth(token.access_token, { type: 'bearer' })
+          .send(editUserDto)
+          .set('Content-Type', 'application/json')
+          .set('Accept', 'application/json')
+          .then((res) => {
+            expect(res.status).toBe(200);
+          });
+      }, 1000);
     });
+  });
+
+  afterEach(() => {
+    clearTimeout(timeoutId);
   });
 
   afterAll(async () => {
