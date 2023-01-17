@@ -2,25 +2,20 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A [Nest framework TypeScript ](https://github.com/nestjs/nest) CRUD RestAPI with RabbitMQ.
+With Postgres as the Database and a docker-compose file to run the DB in Docker.
 
-## Installation
-
-```bash
-$ npm install
-```
-
-## Running the app
+## Getting Started in Development mode
 
 ```bash
 # development
-$ npm run start
+$ npm install
 
-# watch mode
-$ npm run start:dev
+# start postgres in docker and push migrations
+$ npm run db:dev:restart 
 
 # production mode
-$ npm run start:prod
+$ npm run start:dev
 ```
 
 ## Test
@@ -32,20 +27,6 @@ $ npm run test
 # e2e tests
 $ npm run test:e2e
 
-# test coverage
-$ npm run test:cov
 ```
 
-## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
