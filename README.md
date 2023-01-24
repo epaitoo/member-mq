@@ -2,7 +2,7 @@
 
 ## Description
 
-A [Nest framework TypeScript ](https://github.com/nestjs/nest) CRUD RestAPI with RabbitMQ.
+A [Nest framework TypeScript ](https://github.com/nestjs/nest) CRUD RestAPI with Message Queue.
 With Postgres as the Database and a docker-compose file to run the DB in Docker.
 
 ## Getting Started in Development mode
