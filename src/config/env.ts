@@ -12,6 +12,10 @@ export const configuration = () => {
       host: process.env.DB_HOST,
       url: process.env.DATABASE_URL,
     },
+    redis: {
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+    },
     jwtSecret: process.env.JWT_SECRET,
     refreshTokenSecret:
       process.env.REFRESH_JWT_TOKEN_SECRET,
@@ -29,6 +33,8 @@ export const validationSchema = Joi.object({
   DB_PORT: Joi.number().required(),
   DB_HOST: Joi.string().required(),
   DATABASE_URL: Joi.string().required(),
+  REDIS_HOST: Joi.string().required(),
+  REDIS_PORT: Joi.number().required(),
   JWT_SECRET: Joi.string().required(),
   REFRESH_JWT_TOKEN_SECRET: Joi.string().required(),
 });

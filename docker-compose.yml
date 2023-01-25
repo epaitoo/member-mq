@@ -9,6 +9,15 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "${DB_PORT}:5432"
+  redis:
+    image: docker.io/bitnami/redis:latest
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - redis_data:/bitnami/redis/data
   test-db:
     image: postgres
     ports:
@@ -19,5 +28,6 @@ services:
       POSTGRES_PASSWORD: password
 volumes:
   pgdata:
-    
+  redis_data:
+    driver: local
 

@@ -21,4 +21,8 @@ export class CreateMemberDto {
   @IsString()
   @IsOptional()
   group?: string;
+
+  @IsString()
+  @IsOptional()
+  birthday?: string;
 }

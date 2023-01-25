@@ -21,4 +21,8 @@ export class EditMemberDto {
   @IsString()
   @IsOptional()
   group?: string;
+
+  @IsString()
+  @IsOptional()
+  birthday?: string;
 }
