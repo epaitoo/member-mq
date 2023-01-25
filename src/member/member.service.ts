@@ -4,6 +4,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateMemberDto, EditMemberDto } from './dto';
+import * as moment from 'moment';
 
 @Injectable()
 export class MemberService {
@@ -32,9 +33,17 @@ export class MemberService {
   }
 
   async createMember(dto: CreateMemberDto) {
+    const isoBirthday = moment(
+      dto.birthday,
+      'DD/MM/YYYY',
+    ).toISOString();
     const member = await this.prisma.member.create({
       data: {
-        ...dto,
+        fullName: dto.fullName,
+        email: dto.email,
+        phoneNumber: dto.phoneNumber,
+        group: dto.group,
+        birthday: isoBirthday,
       },
     });
     return member;
@@ -44,6 +53,10 @@ export class MemberService {
     memberId: string,
     dto: EditMemberDto,
   ) {
+    const isoBirthday = moment(
+      dto.birthday,
+      'DD/MM/YYYY',
+    ).toISOString();
     const member = await this.prisma.member.findUnique({
       where: {
         id: memberId,
@@ -59,7 +72,11 @@ export class MemberService {
         id: memberId,
       },
       data: {
-        ...dto,
+        fullName: dto.fullName,
+        email: dto.email,
+        phoneNumber: dto.phoneNumber,
+        group: dto.group,
+        birthday: isoBirthday,
       },
     });
   }
