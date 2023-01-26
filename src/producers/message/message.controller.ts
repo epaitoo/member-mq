@@ -8,9 +8,9 @@ export class MessageController {
     private readonly messageService: MessageService,
   ) {}
 
-  @Public()
+  // @Public()
   @Post('birthdays')
-  async transcode() {
-    return this.messageService.transcode();
+  async sendBirthDayMessages() {
+    return this.messageService.getMembersBirthdayToday();
   }
 }

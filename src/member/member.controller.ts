@@ -23,6 +23,11 @@ export class MemberController {
     return this.memberService.getMembers();
   }
 
+  @Get('birthdays')
+  getMembersBirthDay() {
+    return this.memberService.getAllBirthday();
+  }
+
   @Get(':id')
   getMemberById(@Param('id') memberId: string) {
     return this.memberService.getMemberById(memberId);

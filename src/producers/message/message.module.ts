@@ -8,6 +8,7 @@ import {
 } from '@nestjs/config';
 import { BIRTHDAY_MESSAGE_QUEUE } from '../../common/constants/constants';
 import { BirthdayMessageConsumer } from '../../consumers/birthday-message.consumer';
+import { MemberService } from '../../member/member.service';
 
 @Module({
   imports: [
@@ -26,6 +27,10 @@ import { BirthdayMessageConsumer } from '../../consumers/birthday-message.consum
     }),
   ],
   controllers: [MessageController],
-  providers: [MessageService, BirthdayMessageConsumer],
+  providers: [
+    MessageService,
+    BirthdayMessageConsumer,
+    MemberService,
+  ],
 })
 export class MessageModule {}
