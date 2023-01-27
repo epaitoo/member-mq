@@ -1,10 +1,13 @@
 import {
   ForbiddenException,
+  HttpException,
+  HttpStatus,
   Injectable,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateMemberDto, EditMemberDto } from './dto';
 import * as moment from 'moment';
+import { Member } from '@prisma/client';
 
 @Injectable()
 export class MemberService {
@@ -97,5 +100,21 @@ export class MemberService {
         id: memberId,
       },
     });
+  }
+
+  async getAllBirthday(): Promise<Member[]> {
+    try {
+      const date = new Date();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+
+      return await this.prisma
+        .$queryRaw`SELECT "fullName", "phoneNumber" FROM "members" WHERE EXTRACT(MONTH FROM "birthday") = ${month} AND EXTRACT(DAY FROM "birthday") = ${day}`;
+    } catch (error) {
+      throw new HttpException(
+        { error: error.meta.message },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }

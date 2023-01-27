@@ -2,17 +2,33 @@ import { InjectQueue } from '@nestjs/bull';
 import { Injectable } from '@nestjs/common';
 import { BIRTHDAY_MESSAGE_QUEUE } from '../../common/constants/constants';
 import { Queue } from 'bull';
+import { MemberService } from '../../member/member.service';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class MessageService {
   constructor(
     @InjectQueue(BIRTHDAY_MESSAGE_QUEUE)
-    private readonly transcodeQueue: Queue,
+    private readonly memberBirthdayQueue: Queue,
+    private readonly memberService: MemberService,
   ) {}
 
-  async transcode() {
-    await this.transcodeQueue.add({
-      fileName: './file.mp3',
-    });
+  async getMembersBirthdayToday() {
+    const members =
+      await this.memberService.getAllBirthday();
+    await this.memberBirthdayQueue.add(
+      {
+        members,
+      },
+      {
+        removeOnComplete: true,
+      },
+    );
+  }
+
+  // Cron Job to create birthday message queues
+  @Cron(CronExpression.EVERY_DAY_AT_7AM)
+  async triggerMemberBirthdayQueue() {
+    await this.getMembersBirthdayToday();
   }
 }
