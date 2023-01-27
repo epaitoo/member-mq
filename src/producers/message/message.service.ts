@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { BIRTHDAY_MESSAGE_QUEUE } from '../../common/constants/constants';
 import { Queue } from 'bull';
 import { MemberService } from '../../member/member.service';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class MessageService {
@@ -23,5 +24,11 @@ export class MessageService {
         removeOnComplete: true,
       },
     );
+  }
+
+  // Cron Job to create birthday message queues
+  @Cron(CronExpression.EVERY_DAY_AT_7AM)
+  async triggerMemberBirthdayQueue() {
+    await this.getMembersBirthdayToday();
   }
 }

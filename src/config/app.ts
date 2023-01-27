@@ -7,6 +7,7 @@ import { UserModule } from '../user/user.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from '../common/guard';
 import { MessageModule } from '../producers/message/message.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 export const appConfig = {
   imports: [
@@ -15,6 +16,7 @@ export const appConfig = {
       load: [configuration],
       validationSchema,
     }),
+    ScheduleModule.forRoot(),
     AuthModule,
     UserModule,
     MemberModule,
