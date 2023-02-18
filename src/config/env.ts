@@ -19,6 +19,10 @@ export const configuration = () => {
     jwtSecret: process.env.JWT_SECRET,
     refreshTokenSecret:
       process.env.REFRESH_JWT_TOKEN_SECRET,
+    sms: {
+      apiKey: process.env.SMS_API_KEY,
+      baseUrl: process.env.SMS_PROVIDER_BASE_URL,
+    },
   };
 };
 
@@ -37,4 +41,6 @@ export const validationSchema = Joi.object({
   REDIS_PORT: Joi.number().required(),
   JWT_SECRET: Joi.string().required(),
   REFRESH_JWT_TOKEN_SECRET: Joi.string().required(),
+  SMS_API_KEY: Joi.string(),
+  SMS_PROVIDER_BASE_URL: Joi.string(),
 });
