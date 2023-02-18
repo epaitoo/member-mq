@@ -9,6 +9,7 @@ import {
 import { BIRTHDAY_MESSAGE_QUEUE } from '../../common/constants/constants';
 import { BirthdayMessageConsumer } from '../../consumers/birthday-message.consumer';
 import { MemberService } from '../../member/member.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { MemberService } from '../../member/member.service';
     BullModule.registerQueue({
       name: BIRTHDAY_MESSAGE_QUEUE,
     }),
+    HttpModule,
   ],
   controllers: [MessageController],
   providers: [

@@ -30,6 +30,7 @@
     "test:e2e": "dotenv -e .env.test -- jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/axios": "^1.0.1",
     "@nestjs/bull": "^0.6.2",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
