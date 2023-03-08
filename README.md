@@ -8,7 +8,8 @@ With Postgres as the Database and a docker-compose file to run the DB in Docker.
 ## Features
 - User Authentication & Authorisation
 - Prisma ORM with Postgres
-- Message Queues to handle intensive task such as Sending SNS to users
+- Cron Jobs 
+- Message Queues to handle intensive task such as Sending SMS to users
 - SMS integration
 - Redis and BullMQ to handle Queues
 - Docker
