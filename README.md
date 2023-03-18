@@ -23,7 +23,7 @@ $ npm install
 # start postgres in docker and push migrations
 $ npm run db:dev:restart 
 
-# production mode
+# start the server
 $ npm run start:dev
 ```
 
