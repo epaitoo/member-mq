@@ -6,7 +6,8 @@ A [Nest framework TypeScript ](https://github.com/nestjs/nest) CRUD RestAPI with
 With Postgres as the Database and a docker-compose file to run the DB in Docker.
 
 ## Features
-- User Authentication & Authorisation
+- User Authentication & Authorization
+- Member Management
 - Prisma ORM with Postgres
 - Cron Jobs 
 - Message Queues to handle intensive task such as Sending SMS to users
