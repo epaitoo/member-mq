@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -53,5 +54,11 @@ export class AuthController {
       userId,
       refreshToken,
     );
+  }
+
+  @Public()
+  @Get('hello')
+  hello() {
+    return 'hello from MemberMQ API';
   }
 }
