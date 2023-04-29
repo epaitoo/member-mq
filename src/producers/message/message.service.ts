@@ -9,7 +9,7 @@ import {
 } from '../../common/constants/constants';
 import { Queue } from 'bull';
 import { MemberService } from '../../member/member.service';
-import { Cron, CronExpression } from '@nestjs/schedule';
+// import { Cron, CronExpression } from '@nestjs/schedule';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { catchError, lastValueFrom, map } from 'rxjs';
@@ -71,7 +71,7 @@ export class MessageService {
   }
 
   // Cron Job to create birthday message queues
-  @Cron(CronExpression.EVERY_DAY_AT_7AM)
+  // @Cron(CronExpression.EVERY_DAY_AT_7AM)
   async triggerMemberBirthdayQueue() {
     await this.getMembersBirthdayToday();
   }
