@@ -5,6 +5,10 @@
 A [Nest framework TypeScript ](https://github.com/nestjs/nest) CRUD RestAPI with Message Queue.
 With Postgres as the Database and a docker-compose file to run the DB in Docker.
 
+## Live Demo
+
+The Live Demo of the Application can be view [here](https://membrmq-dashboard.vercel.app/)
+
 ## Features
 - User Authentication & Authorization
 - Member Management
